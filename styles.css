@@ -5,9 +5,14 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
     line-height: 1.6;
     color: #333;
+}
+
+/* Применяем шрифт к заголовкам */
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 }
 
 .container {
@@ -185,7 +190,7 @@ body {
     overflow-x: auto;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 20px; /* Для скроллбара */
+    padding: 10px 0 20px 20px; /* Добавляем отступ слева 20px */
 }
 
 /* Скрываем скроллбар для Chrome, Safari и Opera */
@@ -209,7 +214,7 @@ body {
 
 /* Стили для карточек */
 .employee-card {
-    flex: 0 0 calc((100% - 48px) / 3); /* Ровно три карточки в ряд с учетом отступов */
+    flex: 0 0 calc((100% - 48px) / 3);
     min-width: 300px;
     max-width: calc((100% - 48px) / 3);
     background: #ffffff;
