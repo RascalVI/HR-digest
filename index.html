@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Дайджест</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1140px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Стили для бокового меню */
+        .sidebar {
+            width: 250px;
+            min-width: 250px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            position: sticky;
+            top: 20px;
+            height: calc(100vh - 40px);
+            margin-right: 30px;
+        }
+
+        .sidebar-content {
+            position: sticky;
+            top: 20px;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul li a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            color: #007bff;
+        }
+
+        /* Стили для основного контента */
+        .main-content {
+            flex: 1;
+            max-width: 860px;
+            padding: 20px;
+        }
+
+        .header {
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .header-image {
+            width: 100%;
+            height: 300px;
+            margin-bottom: 30px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .content-section {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .content-section h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Стили для карточек сотрудников */
+        .employees-container {
+            position: relative;
+            width: 100%;
+            margin: 30px 0;
+            padding: 10px 0;
+        }
+
+        .employees-scroll {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 20px;
+        }
+
+        .employees-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .employees-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .employees-scroll::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .employees-scroll::-webkit-scrollbar-thumb:hover {
+            background: #666;
+        }
+
+        .employee-card {
+            flex: 0 0 calc((100% - 48px) / 3);
+            min-width: 300px;
+            max-width: calc((100% - 48px) / 3);
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .employee-image {
+            height: 270px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            background: #f8f8f8;
+        }
+
+        .employee-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transform: none !important;
+            transition: none !important;
+            padding: 0;
+        }
+
+        .employee-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .employee-info h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .employee-info .position {
+            margin: 0;
+            color: #8A8A8A;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        /* Стили для HR-аналитики */
+        .hr-analytics {
+            margin-top: 30px;
+        }
+
+        .hr-analytics h3 {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .hr-analytics h4 {
+            font-size: 1.4em;
+            margin: 30px 0 20px;
+            color: #444;
+        }
+
+        .key-figures {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .key-figures li {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .key-figures strong {
+            color: #007bff;
+        }
+
+        .classic-metrics {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            font-style: italic;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .trends-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        .trends-table th,
+        .trends-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .trends-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .trends-table td:first-child {
+            width: 50px;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .trends-table td:nth-child(2) {
+            width: 30%;
+        }
+
+        .trends-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Стили для подвала */
+        .digest-footer {
+            margin-top: 60px;
+            padding: 40px 0;
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .archive-section {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .archive-section h3 {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .archive-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            max-width: 1140px;
+            margin: 0 auto;
+        }
+
+        .archive-link {
+            color: #333;
+            text-decoration: underline;
+            padding: 4px 0;
+        }
+
+        .archive-link:hover {
+            color: #666;
+        }
+
+        /* Медиа-запросы для адаптивности */
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 100%;
+                padding: 0 20px;
+            }
+
+            .employee-card {
+                flex: 0 0 calc((100% - 24px) / 2);
+                max-width: calc((100% - 24px) / 2);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 20px;
+                height: auto;
+            }
+
+            .main-content {
+                max-width: 100%;
+            }
+
+            .employee-card {
+                flex: 0 0 calc(100% - 24px);
+                max-width: 100%;
+            }
+
+            .archive-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .archive-link {
+                width: 100%;
+                text-align: center;
+            }
+
+            .trends-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .trends-table th,
+            .trends-table td {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+
+            .key-figures li {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Боковое меню -->
+        <nav class="sidebar">
+            <div class="sidebar-content">
+                <h3>Содержание</h3>
+                <ul>
+                    <li><a href="#section1">Главные события</a></li>
+                    <li><a href="#section2">Новые назначения</a></li>
+                    <li><a href="#section3">HR-аналитика</a></li>
+                    <li><a href="#section4">Проекты и инициативы</a></li>
+                    <li><a href="#section5">Обучение и развитие</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Основной контент -->
+        <main class="main-content">
+            <header class="header">
+                <h1>HR Дайджест</h1>
+                <div class="header-image">
+                    <img src="images/бэк2 2.png" alt="HR Дайджест главное изображение">
+                </div>
+            </header>
+
+            <section id="section1" class="content-section">
+                <h2>Главные события</h2>
+                <div class="image-container">
+                    <img src="images/вопрос - 2020-08-21T181623.859.png" alt="Описание главного события">
+                    <p class="Подпись к картинке">Фото взято с Яндекс картинки</p>
+                </div>
+                <!-- Контент секции -->
+                Градостроительство сталкивается с множеством проблем, которые становятся всё более актуальными по мере роста городов и изменения внешних факторов. Одной из основных проблем является перенаселённость крупных мегаполисов. В условиях растущего населения и нехватки свободных земель городам приходится расширяться за счёт зелёных зон, что негативно сказывается на экологии и качестве жизни. Перенаселённость также приводит к перегрузке транспортной системы, увеличению плотности застройки и ухудшению состояния инфраструктуры. В результате горожане сталкиваются с нехваткой общественных объектов и качества окружающей среды.
+                <br>Не менее важной проблемой является неэффективное использование территорий. Многие города растут вширь, не учитывая необходимость модернизации инфраструктуры, что влечет за собой перегрузку дорог, недостаток парковочных мест и отсутствие развлекательных и культурных зон. Множество старых районов остаются без внимания и обновления, что приводит к образованию территориальных "дупов" с низким качеством жизни. Примером служат многие крупные города, где старые индустриальные районы преобразуются в зоны, привлекательные для туризма и коммерческой деятельности, но не для комфортного проживания.
+            </section>
+
+            <section id="section2" class="content-section">
+                <h2>Новые назначения</h2>
+                <div class="employees-container">
+                    <div class="employees-scroll">
+                        <div class="employee-card">
+                            <div class="image-container employee-image">
+                                <img src="images/9369d922-b008-4edc-8b11-64edba04fcd3.png" alt="Фото сотрудника">
+                            </div>
+                            <div class="employee-info">
+                                <h3>Иванов Иван Иванович</h3>
+                                <p class="position">Директор по развитию</p>
+                            </div>
+                        </div>
+                        <div class="employee-card">
+                            <div class="image-container employee-image">
+                                <img src="images/employee2.jpg" alt="Фото сотрудника">
+                            </div>
+                            <div class="employee-info">
+                                <h3>Петрова Анна Сергеевна</h3>
+                                <p class="position">Руководитель HR-отдела</p>
+                            </div>
+                        </div>
+                        <div class="employee-card">
+                            <div class="image-container employee-image">
+                                <img src="images/employee3.jpg" alt="Фото сотрудника">
+                            </div>
+                            <div class="employee-info">
+                                <h3>Сидоров Петр Александрович</h3>
+                                <p class="position">Финансовый директор</p>
+                            </div>
+                        </div>
+                        <div class="employee-card">
+                            <div class="image-container employee-image">
+                                <img src="images/employee4.jpg" alt="Фото сотрудника">
+                            </div>
+                            <div class="employee-info">
+                                <h3>Козлова Мария Дмитриевна</h3>
+                                <p class="position">Руководитель отдела маркетинга</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section3" class="content-section">
+                <h2>HR-аналитика</h2>
+                <section class="digest-subsection hr-analytics">
+                    <h3>HR‑аналитика 2025 в&nbsp;России — цифры, тренды, ориентиры</h3>
+
+                    <!-- Section 1 -->
+                    <h4>1. Главные цифры, на которые стоит опереться</h4>
+                    <ul class="key-figures">
+                        <li><strong>33,6 млрд ₽</strong> — объём российского рынка HR‑tech в 2023 г. ( +15 % к 2022‑му)</li>
+                        <li><strong>50% компаний</strong> — применяют ИИ хотя бы в одном HR‑процессе (чаще всего — обучение и админ‑задачи)</li>
+                        <li><strong>37% HR‑команд</strong> — сводят данные вручную в Excel, но <strong>70 %</strong> уже регулярно отслеживают HR‑метрики</li>
+                        <li><strong>88% работодателей</strong> — называют кадровый дефицит главной проблемой; безработица опустилась до 2,4 %</li>
+                        <li><strong>57% компаний</strong> — уже поднимали зарплаты в 1‑м полугодии 2024 г., усиливая потребность в гибкой компенсационной аналитике</li>
+                    </ul>
+
+                    <blockquote class="classic-metrics">
+                        Традиционные показатели — численность, текучесть, ФОТ — никуда не уходят.<br>
+                        Просто к 2025‑му их&nbsp;дополняют прогнозные модели и AI‑инсайты.
+                    </blockquote>
+
+                    <!-- Section 2 -->
+                    <h4>2. Пять ключевых трендов HR‑аналитики 2025</h4>
+                    <table class="trends-table">
+                        <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Что меняется</th>
+                                <th>Почему важно</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><strong>Предиктивные модели текучести</strong></td>
+                                <td>Экономят до 15 % ФОТ, предупреждая уход сотрудников ещё до первых «симптомов»</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><strong>Конвергенция HR‑ и&nbsp;бизнес‑данных</strong></td>
+                                <td>Появляются скоринговые «People P&amp;L», где вклад команды виден в EBITDA</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><strong>Навыковая карта вместо штатного расписания</strong></td>
+                                <td>Фокус с должностей смещается на умения; это точка входа для рескилла и внутренних маркетплейсов вакансий</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><strong>Realtime‑дашборды для линейных менеджеров</strong></td>
+                                <td>Руководители получают self‑service‑аналитику, а HR становится «центром компетенции», а не «хранителем отчётов»</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td><strong>Этичный AI и&nbsp;дата‑суверенитет</strong></td>
+                                <td>Закон об обязательном хранении персональных данных в РФ и проекты по обезличиванию датасетов диктуют новые стандарты</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </section>
+
+            <section id="section4" class="content-section">
+                <h2>Проекты и инициативы</h2>
+                <!-- Контент секции -->
+            </section>
+
+            <section id="section5" class="content-section">
+                <h2>Обучение и развитие</h2>
+                <!-- Контент секции -->
+            </section>
+        </main>
+    </div>
+
+    <footer class="digest-footer">
+        <div class="container">
+            <div class="archive-section">
+                <h3>Архив выпусков</h3>
+                <div class="archive-links">
+                    <a href="#" class="archive-link">HR-дайджест апрель 2024</a>
+                    <a href="#" class="archive-link">HR-дайджест март 2024</a>
+                    <a href="#" class="archive-link">HR-дайджест февраль 2024</a>
+                    <a href="#" class="archive-link">HR-дайджест январь 2024</a>
+                    <a href="#" class="archive-link">HR-дайджест декабрь 2023</a>
+                    <a href="#" class="archive-link">HR-дайджест ноябрь 2023</a>
+                    <a href="#" class="archive-link">HR-дайджест октябрь 2023</a>
+                    <a href="#" class="archive-link">HR-дайджест сентябрь 2023</a>
+                    <a href="#" class="archive-link">HR-дайджест август 2023</a>
+                    <a href="#" class="archive-link">HR-дайджест июль 2023</a>
+                    <a href="#" class="archive-link">HR-дайджест июнь 2023</a>
+                    <a href="#" class="archive-link">HR-дайджест май 2023</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Получаем все ссылки в боковом меню
+            const menuLinks = document.querySelectorAll('.sidebar a');
+            
+            // Добавляем обработчик для плавной прокрутки
+            menuLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Подсветка активного пункта меню при прокрутке
+            const sections = document.querySelectorAll('.content-section');
+            
+            window.addEventListener('scroll', () => {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (pageYOffset >= sectionTop - 200) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                menuLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').slice(1) === current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
